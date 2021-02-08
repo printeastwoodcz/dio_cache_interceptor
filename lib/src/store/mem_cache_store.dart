@@ -79,6 +79,12 @@ class MemCacheStore extends CacheStore {
   }
 
   @override
+  Future<List<CacheResponse>> getAll() async {
+    var items = _cache.entries.values.map((e) => e.value).toList();
+    return Future.value(items);
+  }
+
+  @override
   Future<void> set(CacheResponse response) {
     _cache.remove(response.key);
     _cache[response.key] = response;

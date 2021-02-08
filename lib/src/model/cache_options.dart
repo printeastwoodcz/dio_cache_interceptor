@@ -15,6 +15,10 @@ typedef Decrypt = Future<List<int>> Function(List<int> bytes);
 
 /// Policy to handle request behaviour.
 enum CachePolicy {
+  /// Return the cache value if available
+  /// following
+  cacheOnDelay,
+
   /// Returns the cached value if available.
   /// Requests otherwise.
   cacheFirst,
@@ -74,22 +78,26 @@ class CacheOptions {
   /// Optional method to encrypt cache content
   final Encrypt encrypt;
 
+  /// Option cancel request before end after delay
+  final int cancelAfterDelay;
+
   // Key to retrieve options from request
   static const _extraKey = '@cache_options@';
 
   // UUID helper to mark requests
   static final _uuid = Uuid();
 
-  const CacheOptions({
-    this.policy = CachePolicy.requestFirst,
-    this.hitCacheOnErrorExcept,
-    this.keyBuilder = defaultCacheKeyBuilder,
-    this.maxStale,
-    this.priority = CachePriority.normal,
-    this.decrypt,
-    this.encrypt,
-    this.store,
-  })  : assert(policy != null),
+  const CacheOptions(
+      {this.policy = CachePolicy.requestFirst,
+      this.hitCacheOnErrorExcept,
+      this.keyBuilder = defaultCacheKeyBuilder,
+      this.maxStale,
+      this.priority = CachePriority.normal,
+      this.decrypt,
+      this.encrypt,
+      this.store,
+      this.cancelAfterDelay = 2})
+      : assert(policy != null),
         assert(keyBuilder != null),
         assert(priority != null),
         assert((decrypt == null && encrypt == null) ||
@@ -109,5 +117,42 @@ class CacheOptions {
 
   Options toOptions() {
     return Options(extra: toExtra());
+  }
+
+  CacheOptions copyWith({
+    CachePolicy policy,
+    List<int> hitCacheOnErrorExcept,
+    CacheKeyBuilder keyBuilder,
+    Duration maxStale,
+    CachePriority priority,
+    CacheStore store,
+    Decrypt decrypt,
+    Encrypt encrypt,
+    int cancelAfterDelay,
+  }) {
+    return CacheOptions(
+      policy: policy ?? this.policy,
+      hitCacheOnErrorExcept:
+          hitCacheOnErrorExcept ?? this.hitCacheOnErrorExcept,
+      keyBuilder: keyBuilder ?? this.keyBuilder,
+      maxStale: maxStale ?? this.maxStale,
+      priority: priority ?? this.priority,
+      store: store ?? this.store,
+      decrypt: decrypt ?? this.decrypt,
+      encrypt: encrypt ?? this.encrypt,
+      cancelAfterDelay: cancelAfterDelay ?? this.cancelAfterDelay,
+    );
+  }
+
+  @override
+  String toString() {
+    return '''\n
+      policy: $policy
+      hitCacheOnErrorExcept: $hitCacheOnErrorExcept
+      maxStale: $maxStale
+      priority: $priority
+      store: $store,
+      cancelAfterDelay: $cancelAfterDelay
+    ''';
   }
 }

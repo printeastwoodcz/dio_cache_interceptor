@@ -9,6 +9,8 @@ abstract class CacheStore {
   /// Retrieves cached response from store
   Future<CacheResponse> get(String key);
 
+  Future<List<CacheResponse>> getAll();
+
   /// Pushes response in store
   Future<void> set(CacheResponse response);
 

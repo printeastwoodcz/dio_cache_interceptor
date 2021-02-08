@@ -2,13 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/src/model/cache_control.dart';
 import 'package:flutter/foundation.dart';
 
+import '../dio_cache_interceptor.dart';
+import './model/cache_control.dart';
 import './model/cache_response.dart';
 import './store/cache_store.dart';
 import 'content_serialization.dart';
 import 'model/cache_options.dart';
+
+const String delayCancelKey = "DELAY_CANCEL";
+
+extension CancelTokenX on CancelToken {
+  /// Enable return from cache on Request Cancel
+  void dealayCancel() => cancel(delayCancelKey);
+}
 
 /// Cache interceptor
 class DioCacheInterceptor extends Interceptor {
@@ -65,6 +73,7 @@ class DioCacheInterceptor extends Interceptor {
     }
 
     // Cache response into store
+    var x = _hasCacheDirectives(response);
     if (cacheOptions.policy == CachePolicy.cacheStoreForce ||
         _hasCacheDirectives(response)) {
       final cacheResp = await _buildCacheResponse(
@@ -81,13 +90,13 @@ class DioCacheInterceptor extends Interceptor {
 
   @override
   Future<dynamic> onError(DioError err) async {
-    if (err.type == DioErrorType.CANCEL ||
+    if ((err.type == DioErrorType.CANCEL && err.error != delayCancelKey) ||
         _shouldSkipRequest(err.request.method)) {
       return super.onError(err);
     }
 
     // Retrieve response from cache
-    if (err.response.statusCode == HttpStatus.notModified) {
+    if (err?.response?.statusCode == HttpStatus.notModified) {
       return _getResponse(err.request);
     }
 
@@ -214,6 +223,8 @@ class DioCacheInterceptor extends Interceptor {
   Future<CacheResponse> _getCacheResponse(RequestOptions request) async {
     final cacheOpts = _getCacheOptions(request);
     final cacheKey = cacheOpts.keyBuilder(request);
+    final stroe = _getCacheStore(cacheOpts);
+    final all = await stroe.getAll();
     final result = await _getCacheStore(cacheOpts).get(cacheKey);
 
     if (result != null) {

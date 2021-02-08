@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:dio_cache_interceptor/src/model/cache_control.dart';
 import 'package:path/path.dart' as path;
 
+import '../../dio_cache_interceptor.dart';
 import '../model/cache_priority.dart';
 import '../model/cache_response.dart';
 import 'cache_store.dart';
@@ -84,6 +85,19 @@ class FileCacheStore extends CacheStore {
     }
 
     return resp;
+  }
+
+  @override
+  Future<List<CacheResponse>> getAll() async {
+    List<CacheResponse> _responses = [];
+    for (final entry in _directories.entries) {
+      final file = File(entry.value.path);
+      if (file.existsSync()) {
+        final resp = await _deserializeContent(file);
+        _responses.add(resp);
+      }
+    }
+    return _responses;
   }
 
   @override

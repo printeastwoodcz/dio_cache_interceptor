@@ -4,6 +4,7 @@ import 'package:dio_cache_interceptor/src/model/cache_control.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../dio_cache_interceptor.dart';
 import '../model/cache_priority.dart';
 import '../model/cache_response.dart';
 import 'cache_store.dart';
@@ -141,6 +142,46 @@ class DbCacheStore extends CacheStore {
     }
 
     return Future.value();
+  }
+
+  @override
+  Future<List<CacheResponse>> getAll() async {
+    List<CacheResponse> _responses = [];
+    final db = await _getDatabase();
+
+    if (db != null) {
+      final List<Map> resultList = await db.query(_tableName);
+      if (resultList.isEmpty) return Future.value();
+      resultList.asMap().forEach((index, result) {
+        final item = CacheResponse(
+          cacheControl:
+              CacheControl.fromHeader(result[_columnCacheControl]?.split(', ')),
+          content: result[_columnContent],
+          date: result[_columnDate] != null
+              ? DateTime.tryParse(result[_columnDate])
+              : null,
+          eTag: result[_columnETag],
+          expires: result[_columnExpires] != null
+              ? DateTime.tryParse(result[_columnExpires])
+              : null,
+          headers: result[_columnHeaders],
+          key: result[_columnKey],
+          lastModified: result[_columnLastModified],
+          maxStale: result[_columnMaxStale] != null
+              ? DateTime.fromMillisecondsSinceEpoch(result[_columnMaxStale],
+                  isUtc: true)
+              : null,
+          // maxStale: null,
+          priority: CachePriority.values[result[_columnPriority]],
+          responseDate: DateTime.tryParse(result[_columnResponseDate]),
+          url: result[_columnUrl],
+        );
+        print('result: $index: $item');
+        _responses.add(item);
+      });
+    }
+
+    return Future.value(_responses);
   }
 
   @override

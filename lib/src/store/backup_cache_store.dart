@@ -65,4 +65,10 @@ class BackupCacheStore extends CacheStore {
     secondary.set(response);
     await primary.set(response);
   }
+
+  @override
+  Future<List<CacheResponse>> getAll() {
+    // TODO: implement getAll
+    throw UnimplementedError();
+  }
 }
