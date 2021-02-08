@@ -223,8 +223,6 @@ class DioCacheInterceptor extends Interceptor {
   Future<CacheResponse> _getCacheResponse(RequestOptions request) async {
     final cacheOpts = _getCacheOptions(request);
     final cacheKey = cacheOpts.keyBuilder(request);
-    final stroe = _getCacheStore(cacheOpts);
-    final all = await stroe.getAll();
     final result = await _getCacheStore(cacheOpts).get(cacheKey);
 
     if (result != null) {
