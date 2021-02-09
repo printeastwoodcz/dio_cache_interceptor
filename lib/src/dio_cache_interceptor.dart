@@ -38,6 +38,7 @@ class DioCacheInterceptor extends Interceptor {
     }
 
     final options = _getCacheOptions(request);
+    request.extra = options.toExtra();
 
     if (options.policy == CachePolicy.refresh) {
       return super.onRequest(request);
@@ -73,8 +74,11 @@ class DioCacheInterceptor extends Interceptor {
     }
 
     // Cache response into store
-    var x = _hasCacheDirectives(response);
     if (cacheOptions.policy == CachePolicy.cacheStoreForce ||
+        ((cacheOptions.policy == CachePolicy.refresh ||
+                cacheOptions.policy == CachePolicy.requestFirst ||
+                cacheOptions.policy == CachePolicy.refresh) &&
+            cacheOptions.forceSave == true) ||
         _hasCacheDirectives(response)) {
       final cacheResp = await _buildCacheResponse(
         cacheOptions.keyBuilder(response.request),
@@ -159,7 +163,20 @@ class DioCacheInterceptor extends Interceptor {
   }
 
   CacheOptions _getCacheOptions(RequestOptions request) {
-    return CacheOptions.fromExtra(request) ?? _options;
+    var requestCacheOptions = CacheOptions.fromExtra(request);
+
+    var value = requestCacheOptions != null
+        ? _options.copyWith(
+            policy: requestCacheOptions.policy,
+            hitCacheOnErrorExcept: requestCacheOptions.hitCacheOnErrorExcept,
+            maxStale: requestCacheOptions.maxStale,
+            priority: requestCacheOptions.priority,
+            store: requestCacheOptions.store,
+            decrypt: requestCacheOptions.decrypt,
+            encrypt: requestCacheOptions.encrypt,
+            cancelAfterDelay: requestCacheOptions.cancelAfterDelay)
+        : _options;
+    return value;
   }
 
   CacheStore _getCacheStore(CacheOptions options) {

@@ -81,6 +81,9 @@ class CacheOptions {
   /// Option cancel request before end after delay
   final int cancelAfterDelay;
 
+  /// Option for force save after request finished
+  final bool forceSave;
+
   // Key to retrieve options from request
   static const _extraKey = '@cache_options@';
 
@@ -96,7 +99,8 @@ class CacheOptions {
       this.decrypt,
       this.encrypt,
       this.store,
-      this.cancelAfterDelay = 2})
+      this.cancelAfterDelay = 2,
+      this.forceSave = false})
       : assert(policy != null),
         assert(keyBuilder != null),
         assert(priority != null),
@@ -119,29 +123,29 @@ class CacheOptions {
     return Options(extra: toExtra());
   }
 
-  CacheOptions copyWith({
-    CachePolicy policy,
-    List<int> hitCacheOnErrorExcept,
-    CacheKeyBuilder keyBuilder,
-    Duration maxStale,
-    CachePriority priority,
-    CacheStore store,
-    Decrypt decrypt,
-    Encrypt encrypt,
-    int cancelAfterDelay,
-  }) {
+  CacheOptions copyWith(
+      {CachePolicy policy,
+      List<int> hitCacheOnErrorExcept,
+      CacheKeyBuilder keyBuilder,
+      Duration maxStale,
+      CachePriority priority,
+      CacheStore store,
+      Decrypt decrypt,
+      Encrypt encrypt,
+      int cancelAfterDelay,
+      bool forceSave}) {
     return CacheOptions(
-      policy: policy ?? this.policy,
-      hitCacheOnErrorExcept:
-          hitCacheOnErrorExcept ?? this.hitCacheOnErrorExcept,
-      keyBuilder: keyBuilder ?? this.keyBuilder,
-      maxStale: maxStale ?? this.maxStale,
-      priority: priority ?? this.priority,
-      store: store ?? this.store,
-      decrypt: decrypt ?? this.decrypt,
-      encrypt: encrypt ?? this.encrypt,
-      cancelAfterDelay: cancelAfterDelay ?? this.cancelAfterDelay,
-    );
+        policy: policy ?? this.policy,
+        hitCacheOnErrorExcept:
+            hitCacheOnErrorExcept ?? this.hitCacheOnErrorExcept,
+        keyBuilder: keyBuilder ?? this.keyBuilder,
+        maxStale: maxStale ?? this.maxStale,
+        priority: priority ?? this.priority,
+        store: store ?? this.store,
+        decrypt: decrypt ?? this.decrypt,
+        encrypt: encrypt ?? this.encrypt,
+        cancelAfterDelay: cancelAfterDelay ?? this.cancelAfterDelay,
+        forceSave: forceSave ?? this.forceSave);
   }
 
   @override
@@ -152,7 +156,8 @@ class CacheOptions {
       maxStale: $maxStale
       priority: $priority
       store: $store,
-      cancelAfterDelay: $cancelAfterDelay
+      cancelAfterDelay: $cancelAfterDelay,
+      forceSave: $forceSave
     ''';
   }
 }
