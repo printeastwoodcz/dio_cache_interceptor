@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'db_cache_store_test.dart' as dbStoreTest;
-import 'file_cache_store_test.dart' as fileStoreTest;
-import 'mem_cache_store_test.dart' as memStoreTest;
-import 'backup_cache_store_test.dart' as backupStoreTest;
+import 'db_cache_store_test.dart' as db_store_test;
+import 'file_cache_store_test.dart' as file_store_test;
+import 'mem_cache_store_test.dart' as mem_store_test;
+import 'backup_cache_store_test.dart' as backup_store_test;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  dbStoreTest.main();
-  fileStoreTest.main();
-  memStoreTest.main();
-  backupStoreTest.main();
+  db_store_test.main();
+  file_store_test.main();
+  mem_store_test.main();
+  backup_store_test.main();
 }
