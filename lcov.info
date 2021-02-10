@@ -1,4 +1,4 @@
-SF:lib/src/dio_cache_interceptor.dart
+SF:./lib/src/dio_cache_interceptor.dart
 DA:18,0
 DA:28,0
 DA:29,0
@@ -122,9 +122,9 @@ DA:269,0
 LF:120
 LH:0
 end_of_record
-SF:lib/src/model/cache_control.dart
-DA:22,1
-DA:29,1
+SF:./lib/src/model/cache_control.dart
+DA:22,0
+DA:29,0
 DA:31,1
 DA:38,0
 DA:40,0
@@ -150,9 +150,9 @@ DA:87,0
 DA:93,0
 DA:94,0
 LF:26
-LH:3
+LH:1
 end_of_record
-SF:lib/src/model/cache_options.dart
+SF:./lib/src/model/cache_options.dart
 DA:17,1
 DA:20,1
 DA:24,1
@@ -161,7 +161,7 @@ DA:37,1
 DA:42,1
 DA:45,1
 DA:91,0
-DA:93,1
+DA:93,0
 DA:104,0
 DA:105,0
 DA:106,0
@@ -196,9 +196,9 @@ DA:159,0
 DA:160,0
 DA:161,0
 LF:42
-LH:8
+LH:7
 end_of_record
-SF:lib/src/model/cache_priority.dart
+SF:./lib/src/model/cache_priority.dart
 DA:5,2
 DA:7,1
 DA:10,1
@@ -208,7 +208,7 @@ DA:18,3
 LF:6
 LH:6
 end_of_record
-SF:lib/src/model/cache_response.dart
+SF:./lib/src/model/cache_response.dart
 DA:55,1
 DA:71,1
 DA:72,1
@@ -223,7 +223,7 @@ DA:87,0
 LF:11
 LH:3
 end_of_record
-SF:lib/src/store/db_cache_store.dart
+SF:./lib/src/store/db_cache_store.dart
 DA:47,0
 DA:48,0
 DA:52,0
@@ -340,7 +340,7 @@ DA:269,0
 LF:113
 LH:0
 end_of_record
-SF:lib/src/store/file_cache_store.dart
+SF:./lib/src/store/file_cache_store.dart
 DA:18,1
 DA:19,0
 DA:20,1
@@ -484,7 +484,7 @@ DA:278,1
 LF:140
 LH:121
 end_of_record
-SF:lib/src/store/mem_cache_store.dart
+SF:./lib/src/store/mem_cache_store.dart
 DA:14,1
 DA:17,1
 DA:19,0
@@ -571,7 +571,7 @@ DA:197,1
 LF:83
 LH:59
 end_of_record
-SF:lib/src/store/backup_cache_store.dart
+SF:./lib/src/store/backup_cache_store.dart
 DA:25,0
 DA:26,0
 DA:27,0
@@ -594,7 +594,7 @@ DA:71,0
 LF:19
 LH:0
 end_of_record
-SF:lib/src/content_serialization.dart
+SF:./lib/src/content_serialization.dart
 DA:5,0
 DA:7,0
 DA:9,0
