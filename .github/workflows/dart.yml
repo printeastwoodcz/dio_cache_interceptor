@@ -18,6 +18,9 @@ jobs:
       - run: flutter pub get
       - name: Analyze Dart
         uses: zgosalvez/github-actions-analyze-dart@v1
+      - name: Very Good Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
+
   package-analysis:
     name: Package analysis
     runs-on: ubuntu-latest
@@ -44,3 +47,5 @@ jobs:
             echo Score too low!
             exit 1
           fi
+- name: Very Good Coverage
+  uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
