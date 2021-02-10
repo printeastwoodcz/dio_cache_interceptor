@@ -11,7 +11,7 @@ import './store/cache_store.dart';
 import 'content_serialization.dart';
 import 'model/cache_options.dart';
 
-const String delayCancelKey = "DELAY_CANCEL";
+const String delayCancelKey = 'DELAY_CANCEL';
 
 extension CancelTokenX on CancelToken {
   /// Enable return from cache on Request Cancel
@@ -207,7 +207,7 @@ class DioCacheInterceptor extends Interceptor {
         (httpDate != null) ? HttpDate.parse(httpDate) : DateTime.now().toUtc();
 
     final httpExpiresDate = response.headers[HttpHeaders.expiresHeader]?.first;
-    var expiresDate;
+    DateTime expiresDate;
     if (httpExpiresDate != null) {
       try {
         expiresDate = HttpDate.parse(httpDate);

@@ -34,7 +34,7 @@ class CacheControl {
     String privacy;
     bool noCache;
     bool noStore;
-    List<String> other = List<String>();
+    var other = <String>[];
 
     for (var value in headerValues) {
       if (value == 'no-cache') {
@@ -61,7 +61,7 @@ class CacheControl {
 
   /// Serialize cache-control values
   String toHeader() {
-    final values = List<String>()
+    final values = <String>[]
       ..add(maxAge != null ? 'max-age=$maxAge' : '')
       ..add(privacy ?? '')
       ..add((noCache ?? false) ? 'no-cache' : '')
