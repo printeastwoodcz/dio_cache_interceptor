@@ -146,7 +146,7 @@ class DbCacheStore extends CacheStore {
 
   @override
   Future<List<CacheResponse>> getAll() async {
-    List<CacheResponse> _responses = [];
+    var _responses = <CacheResponse>[];
     final db = await _getDatabase();
 
     if (db != null) {

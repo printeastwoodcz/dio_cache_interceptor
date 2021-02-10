@@ -89,7 +89,7 @@ class FileCacheStore extends CacheStore {
 
   @override
   Future<List<CacheResponse>> getAll() async {
-    List<CacheResponse> _responses = [];
+    var _responses = <CacheResponse>[];
     for (final entry in _directories.entries) {
       final file = File(entry.value.path);
       if (file.existsSync()) {

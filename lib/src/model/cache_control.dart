@@ -25,6 +25,7 @@ class CacheControl {
     this.noCache = false,
     this.noStore = false,
     List<String> other,
+    // ignore: unnecessary_this
   }) : this.other = other ?? [];
 
   factory CacheControl.fromHeader(List<String> headerValues) {
