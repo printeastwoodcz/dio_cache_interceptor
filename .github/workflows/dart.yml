@@ -2,9 +2,9 @@ name: Dart
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -47,5 +47,3 @@ jobs:
             echo Score too low!
             exit 1
           fi
-- name: Very Good Coverage
-  uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
