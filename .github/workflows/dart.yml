@@ -8,34 +8,39 @@ on:
 
 jobs:
   build:
+    name: Code analysis
     runs-on: ubuntu-latest
-
-    # Note that this workflow uses the latest stable version of the Dart SDK.
-    # Docker images for other release channels - like dev and beta - are also
-    # available. See https://hub.docker.com/r/google/dart/ for the available
-    # images.
-    container:
-      image:  google/dart:latest
-
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+      - run: flutter pub get
+      - name: Analyze Dart
+        uses: zgosalvez/github-actions-analyze-dart@v1
+  package-analysis:
+    name: Package analysis
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Print Dart SDK version
-        run: dart --version
+      - uses: axel-op/dart-package-analyzer@v3
+        # set an id for the current step
+        id: analysis
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: dart pub get
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
-        run: dart analyze
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      - name: Run tests
-        run: dart test
+      # You can then use this id to retrieve the outputs in the next steps.
+      # The following step shows how to exit the workflow with an error if the total score in percentage is below 50:
+      - name: Check scores
+        env:
+          # NB: "analysis" is the id set above. Replace it with the one you used if different.
+          TOTAL: ${{ steps.analysis.outputs.total }}
+          TOTAL_MAX: ${{ steps.analysis.outputs.total_max }}
+        run: |
+          PERCENTAGE=$(( $TOTAL * 100 / $TOTAL_MAX ))
+          if (( $PERCENTAGE < 50 ))
+          then
+            echo Score too low!
+            exit 1
+          fi
