@@ -84,6 +84,9 @@ class CacheOptions {
   /// Option for force save after request finished
   final bool forceSave;
 
+  // Option for force pre cache next request with queryParam [page]
+  final bool preCache;
+
   // Key to retrieve options from request
   static const _extraKey = '@cache_options@';
 
@@ -100,7 +103,8 @@ class CacheOptions {
       this.encrypt,
       this.store,
       this.cancelAfterDelay = 2,
-      this.forceSave = false})
+      this.forceSave = false,
+      this.preCache = false})
       : assert(policy != null),
         assert(keyBuilder != null),
         assert(priority != null),
@@ -133,7 +137,8 @@ class CacheOptions {
       Decrypt decrypt,
       Encrypt encrypt,
       int cancelAfterDelay,
-      bool forceSave}) {
+      bool forceSave,
+      bool preCache}) {
     return CacheOptions(
         policy: policy ?? this.policy,
         hitCacheOnErrorExcept:
@@ -145,7 +150,8 @@ class CacheOptions {
         decrypt: decrypt ?? this.decrypt,
         encrypt: encrypt ?? this.encrypt,
         cancelAfterDelay: cancelAfterDelay ?? this.cancelAfterDelay,
-        forceSave: forceSave ?? this.forceSave);
+        forceSave: forceSave ?? this.forceSave,
+        preCache: preCache ?? this.preCache);
   }
 
   @override
@@ -157,7 +163,8 @@ class CacheOptions {
       priority: $priority
       store: $store,
       cancelAfterDelay: $cancelAfterDelay,
-      forceSave: $forceSave
+      forceSave: $forceSave,
+      preCache: $preCache
     ''';
   }
 }
