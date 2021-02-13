@@ -174,7 +174,8 @@ class DioCacheInterceptor extends Interceptor {
             store: requestCacheOptions.store,
             decrypt: requestCacheOptions.decrypt,
             encrypt: requestCacheOptions.encrypt,
-            cancelAfterDelay: requestCacheOptions.cancelAfterDelay)
+            cancelAfterDelay: requestCacheOptions.cancelAfterDelay,
+            preCache: requestCacheOptions.preCache)
         : _options;
     return value;
   }
