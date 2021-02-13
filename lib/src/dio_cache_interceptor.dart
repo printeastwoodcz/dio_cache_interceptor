@@ -169,12 +169,14 @@ class DioCacheInterceptor extends Interceptor {
         ? _options.copyWith(
             policy: requestCacheOptions.policy,
             hitCacheOnErrorExcept: requestCacheOptions.hitCacheOnErrorExcept,
+            keyBuilder: requestCacheOptions.keyBuilder,
             maxStale: requestCacheOptions.maxStale,
             priority: requestCacheOptions.priority,
-            store: requestCacheOptions.store,
             decrypt: requestCacheOptions.decrypt,
             encrypt: requestCacheOptions.encrypt,
+            store: requestCacheOptions.store,
             cancelAfterDelay: requestCacheOptions.cancelAfterDelay,
+            forceSave: requestCacheOptions.forceSave,
             preCache: requestCacheOptions.preCache)
         : _options;
     return value;
